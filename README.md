@@ -17,7 +17,7 @@ $ image_format_converter [変換元画像ファイル] [変換後画像ファイ
 ### Example
 
 ```shell
-$ image_format_converter sample_image/A.bmp output_image/A.png
+$ image_format_converter A.bmp A.png
 ```
 
 ## Convertible image formats

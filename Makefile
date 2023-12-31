@@ -1,9 +1,9 @@
 CC				= g++
 CFLAGS			= -O2 -Wall
-VPATH			= src:src/test
+VPATH			= src:src/image
 BUILD_DIR		= build
 OBJ_DIR			= $(BUILD_DIR)/objs
-OBJ_FILE		= main.o sub.o
+OBJ_FILE		= main.o ImageBase.o TGA.o
 OBJS			= $(OBJ_FILE:%.o=$(OBJ_DIR)/%.o)
 SRCS			= $(OBJ_FILE:%.o=%.cpp)
 PROGRAM			= $(BUILD_DIR)/image_format_converter
