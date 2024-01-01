@@ -1,44 +1,68 @@
 /**
  * 画像ヘッダーファイル
 */
+#pragma once
 #include <stdio.h>
+
+/**
+ * 画像フォーマット列挙型
+*/
+enum class ImageFormat{
+    BMP, PNG, OTHERS
+};
 
 /**
  * 画像インターフェース
 */
 struct IImage{
-    virtual void    open(const char filePath[]) = 0;
-    virtual void    create() = 0;
-    virtual void    save(const char saveFilePath[]) = 0;
+    virtual ~IImage(){}
     virtual void    printFileName() = 0;
+};
+
+/**
+ * 画像ファクトリークラス
+*/
+class ImageFactory{
+private:
+    ImageFormat judgeImageFormat(char*);
+    bool        isCorrectFileSignature(int, unsigned char*, int, const unsigned char*);
+public:
+    IImage*     createImage(char*);
 };
 
 /**
  * 画像基底クラス
 */
 class ImageBase : public IImage{
-private:
-    const char*   filePath;
-    int     fileSize;
+protected:
+    const char*     filePath;
+    ImageFormat     format;
     FILE*   file;
-    bool    isCorrectFile;
-    void    calcFileSize();
-    void    judgeCollectFile();
+    void    filePathNullCheck();
 public:
     ImageBase();
-    ImageBase(const char filePath[]);
-    void    open(const char filePath[]);
-    void    create();
-    void    save(const char saveFilePath[]);
-    void    printFileName();
+    ImageBase(const char[]);
+    void        printFileName();
 };
 
 /**
- * TGAクラス
+ * BMPクラス
 */
-class TGA : public ImageBase{
+class BMP : public ImageBase{
 private:
 public:
-    TGA();
+    BMP();
+    BMP(const char[]);
+    static const unsigned char  fileSignature[2];
 };
 
+/**
+ * PNGクラス
+*/
+class PNG : public ImageBase{
+private:
+public:
+    PNG();
+    PNG(const char[]);
+    static const unsigned char  fileSignature[8];
+};
