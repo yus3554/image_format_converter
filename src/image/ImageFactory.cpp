@@ -1,24 +1,21 @@
 /**
- * 画像ファクトリークラス
-*/
+ * @file ImageFactory.cpp
+ * @author Yusuke Ota
+ * @brief 画像クラスのファクトリークラスの実装部
+ * @version 0.1
+ * @date 2024-01-02
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "Image.h"
 
+/**
+ * @brief 取得するファイルシグネチャ長
+ * 
+ */
 #define SIGNATURE_SIZE 8
 
-IImage* ImageFactory::createImage(char* filePath){
-    ImageFormat format = this->judgeImageFormat(filePath);
-
-    if(format == ImageFormat::BMP){
-        return new BMP(filePath);
-    } else if (format == ImageFormat::PNG){
-        return new PNG(filePath);
-    } else {
-        printf("対応していないファイルです。\n");
-        exit(EXIT_FAILURE);
-    }
-}
 ImageFormat ImageFactory::judgeImageFormat(char* filePath){
     // ファイルシグネチャ用変数
     unsigned char signature[SIGNATURE_SIZE];
@@ -45,15 +42,18 @@ ImageFormat ImageFactory::judgeImageFormat(char* filePath){
         return ImageFormat::OTHERS;
     }
 }
+
 bool ImageFactory::isCorrectFileSignature(
     int srcSigSize, unsigned char* srcSig, int destSigSize, const unsigned char* destSig
 ){
     bool result = true;
 
+    // destを基準に比較するので、destよりもsrcが小さい場合はfalse
     if(srcSigSize < destSigSize){
         return false;
     }
 
+    // 比較
     for(int i = 0; i < destSigSize; i++){
         if(srcSig[i] != destSig[i]){
             result = false;
@@ -62,4 +62,17 @@ bool ImageFactory::isCorrectFileSignature(
     }
 
     return result;
+}
+
+IImage* ImageFactory::createImage(char* filePath){
+    ImageFormat format = this->judgeImageFormat(filePath);
+
+    if(format == ImageFormat::BMP){
+        return new BMP(filePath);
+    } else if (format == ImageFormat::PNG){
+        return new PNG(filePath);
+    } else {
+        printf("対応していないファイルです。\n");
+        exit(EXIT_FAILURE);
+    }
 }

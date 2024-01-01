@@ -15,19 +15,19 @@
 - 変換元画像ファイルと同じ場所、同じ名前で変換後のファイルを出力します。
 
 ```shell
-$ image_format_converter [-f format] [変換元画像ファイル] 
+image_format_converter [-f format] [変換元画像ファイル] 
 ```
 
 ### Example
 
 - A.bmpをA.pngに変換
 ```shell
-$ image_format_converter A.bmp
+image_format_converter A.bmp
 ```
 
 - B.pngをB.bmpに変換
 ```shell
-$ image_format_converter B.png -f bmp
+image_format_converter B.png -f bmp
 ```
 
 ## Convertible image formats

@@ -1,13 +1,35 @@
+/**
+ * @file main.cpp
+ * @author Yusuke Ota
+ * @brief image_format_converterのメイン関数
+ * @version 0.1
+ * @date 2024-01-02
+ */
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include "image/Image.h"
 #include "converter/Converter.h"
 
+/**
+ * @brief ファイルパスの最大長
+ */
 #define MAX_FILE_PATH_LENGTH 256
 
+/**
+ * @brief コマンドライン引数から画像パスと変換したい画像フォーマットを取得する
+ * 
+ * @param[out] imagePath 画像パスを格納するポインタ
+ * @param[out] convertFormat 画像フォーマットを出力するポインタ
+ * @param[in] argc コマンドライン引数の数
+ * @param[in] argv コマンドライン引数
+ */
 void analyzeArgs(char* imagePath, ImageFormat& convertFormat, int argc, char* argv[]);
 
+/**
+ * @brief メイン関数
+ */
 int main(int argc, char* argv[]){
     // 変換フォーマット
     ImageFormat convertFormat = ImageFormat::PNG;
