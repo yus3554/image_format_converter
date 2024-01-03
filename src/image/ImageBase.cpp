@@ -29,6 +29,7 @@ void ImageBase::printFileName(){
 }
 
 ImageData ImageBase::getImageData(){
+    // 各画像クラスで初期化してください。
     return ImageData();
 }
 

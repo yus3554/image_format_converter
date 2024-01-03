@@ -104,7 +104,17 @@ public:
      */
     void        printFileName();
 
+    /**
+     * @brief Get the Image Data object
+     * 
+     * @return ImageData 
+     */
     ImageData   getImageData();
+
+    /**
+     * @brief 画像を生成する
+     * 
+     */
     void        generateImage(ImageData data);
 };
 
@@ -133,6 +143,19 @@ public:
      * 
      */
     static const char           extension[4];
+
+    /**
+     * @brief Get the Image Data object
+     * 
+     * @return ImageData 
+     */
+    ImageData   getImageData();
+
+    /**
+     * @brief 画像を生成する
+     * 
+     */
+    void        generateImage(ImageData data);
 };
 
 /**
@@ -160,4 +183,17 @@ public:
      * 
      */
     static const char           extension[4];
+
+    /**
+     * @brief Get the Image Data object
+     * 
+     * @return ImageData 
+     */
+    ImageData   getImageData();
+
+    /**
+     * @brief 画像を生成する
+     * 
+     */
+    void        generateImage(ImageData data);
 };
