@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Image.h"
+#include "ImageFactory.h"
 
 /**
  * @brief 取得するファイルシグネチャ長
@@ -64,9 +65,13 @@ bool ImageFactory::isCorrectFileSignature(
     return result;
 }
 
-IImage* ImageFactory::createImage(char* filePath){
+IImage* ImageFactory::createImageFromPath(char* filePath){
     ImageFormat format = this->judgeImageFormat(filePath);
 
+    return this->createImageFromFormat(format, filePath);
+}
+
+IImage* ImageFactory::createImageFromFormat(ImageFormat format, char* filePath){
     if(format == ImageFormat::BMP){
         return new BMP(filePath);
     } else if (format == ImageFormat::PNG){

@@ -39,11 +39,9 @@ int main(int argc, char* argv[]){
     // 画像パスとフォーマットをコマンドライン引数から取得
     analyzeArgs(imagePath, convertFormat, argc, argv);
 
-    printf("format:\t%d\n", convertFormat);
-    printf("path:\t%s\n", imagePath);
-
+    // 変換を実行
     Converter *c = new Converter(imagePath, convertFormat);
-    c->printImageFilePath();
+    c->executeConvert();
     delete c;
 
     return 0;
@@ -53,12 +51,12 @@ void analyzeArgs(char* imagePath, ImageFormat& convertFormat, int argc, char* ar
     for (int i = 1; i < argc; i++){
         // フォーマット
         if(strcmp(argv[i], "-f") == 0 && ((i + 1) < argc)){
-            if (strcmp(argv[i + 1], "bmp") == 0){
+            if (strcmp(argv[i + 1], BMP::extension) == 0){
                 convertFormat = ImageFormat::BMP;
-            } else if(strcmp(argv[i + 1], "png") == 0){
+            } else if(strcmp(argv[i + 1], PNG::extension) == 0){
                 convertFormat = ImageFormat::PNG;
             } else {
-                printf("%s は対応していない画像フォーマットです。\n", argv[i + 1]);
+                printf("%s は対応していない出力フォーマットです。\n", argv[i + 1]);
                 exit(EXIT_FAILURE);
             }
             // -fのあとは画像フォーマット文字列が入っているためスキップ

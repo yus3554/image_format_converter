@@ -27,3 +27,11 @@ void ImageBase::filePathNullCheck(){
 void ImageBase::printFileName(){
     printf("%s\n", this->filePath);
 }
+
+ImageData ImageBase::getImageData(){
+    return ImageData();
+}
+
+void ImageBase::generateImage(ImageData data){
+    // 各画像クラスで初期化してください。
+}

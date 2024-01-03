@@ -18,6 +18,16 @@ enum class ImageFormat{
 };
 
 /**
+ * @brief 画像データ
+ * 
+ */
+class ImageData{
+public:
+    // TODO: いろんな画像に関するデータを入れる
+    // 
+};
+
+/**
  * @brief 画像クラスのインターフェース
  * 
  */
@@ -32,46 +42,23 @@ struct IImage{
      * @brief ファイル名をプリントする
      * 
      */
-    virtual void    printFileName() = 0;
-};
-
-/**
- * @brief 画像クラスのファクトリークラス
- * 
- */
-class ImageFactory{
-private:
-    /**
-     * @brief  指定された画像ファイルがどの画像フォーマットかを判定する
-     * 
-     * @param filePath 画像ファイルパス
-     * @return ImageFormat 判定した画像フォーマット
-     */
-    ImageFormat judgeImageFormat(char* filePath);
+    virtual void        printFileName() = 0;
 
     /**
-     * @brief ファイルシグネチャが正しいかどうかを判定する
+     * @brief Get the Image Data object
      * 
-     * @param srcSigSize 判定元のファイルシグネチャ長
-     * @param srcSig 判定元のファイルシグネチャ
-     * @param destSigSize 判定先のファイルシグネチャ長
-     * @param destSig 判定先のファイルシグネチャ
-     * @return true 判定元と判定先が等しい
-     * @return false 判定元と判定先が等しくない
+     * @return ImageData 
      */
-    bool        isCorrectFileSignature(
-        int srcSigSize, unsigned char* srcSig, int destSigSize, const unsigned char* destSig
-    );
- 
-public:
+    virtual ImageData   getImageData()  = 0;
+
     /**
-     * @brief 画像ファイルに適したクラスの画像クラスを作成する
+     * @brief 画像を生成する
      * 
-     * @param filePath 画像ファイルパス
-     * @return IImage* 画像ファイルに適した画像クラスのインターフェース
      */
-    IImage*     createImage(char* filePath);
+    // TODO: 画像を生成する。なので、ConverterクラスでもこのIImageクラスをインスタンス化し、この関数を実行して画像を生成する
+    virtual void        generateImage(ImageData data)   = 0;
 };
+
 
 /**
  * @brief 画像基底クラス
@@ -116,6 +103,9 @@ public:
      * 
      */
     void        printFileName();
+
+    ImageData   getImageData();
+    void        generateImage(ImageData data);
 };
 
 /**
@@ -128,12 +118,6 @@ public:
     /**
      * @brief Construct a new BMP object
      * 
-     */
-    BMP();
-
-    /**
-     * @brief Construct a new BMP object
-     * 
      * @param filePath 画像ファイルパス
      */
     BMP(const char filePath[]);
@@ -143,6 +127,12 @@ public:
      * 
      */
     static const unsigned char  fileSignature[2];
+
+    /**
+     * @brief BMPの拡張子名
+     * 
+     */
+    static const char           extension[4];
 };
 
 /**
@@ -155,12 +145,6 @@ public:
     /**
      * @brief Construct a new PNG object
      * 
-     */
-    PNG();
-
-    /**
-     * @brief Construct a new PNG object
-     * 
      * @param filePath 画像ファイルパス
      */
     PNG(const char filePath[]);
@@ -170,4 +154,10 @@ public:
      * 
      */
     static const unsigned char  fileSignature[8];
+
+    /**
+     * @brief PNGの拡張子名
+     * 
+     */
+    static const char           extension[4];
 };

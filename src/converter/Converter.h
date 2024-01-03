@@ -8,6 +8,7 @@
 
 #pragma once
 #include "../image/Image.h"
+#include "../image/ImageFactory.h"
 
 /**
  * @brief 画像をコンバートするクラス
@@ -21,10 +22,10 @@ private:
     char*       imagePath;
 
     /**
-     * @brief 画像フォーマット
+     * @brief 変換したい画像フォーマット
      * 
      */
-    ImageFormat format;
+    ImageFormat convertFormat;
 
     /**
      * @brief 画像クラス
@@ -32,14 +33,20 @@ private:
      */
     IImage*     image;
 
+    /**
+     * @brief 画像クラスのファクトリー
+     * 
+     */
+    ImageFactory* factory;
+
 public:
     /**
      * @brief Construct a new Converter object
      * 
      * @param[in] imagePath 画像ファイルパス
-     * @param[in] format 画像フォーマット
+     * @param[in] convertFormat 変換したい画像フォーマット
      */
-    Converter(char* imagePath, ImageFormat format);
+    Converter(char* imagePath, ImageFormat convertFormat);
 
     /**
      * @brief Destroy the Converter object
@@ -52,5 +59,11 @@ public:
      * 
      */
     void    printImageFilePath();
+
+    /**
+     * @brief 変換を実行する
+     * 
+     */
+    void    executeConvert();
 };
 
