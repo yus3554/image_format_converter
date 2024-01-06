@@ -7,7 +7,7 @@ BUILD_DIR		= build
 # オブジェクトファイルを格納するディレクトリ
 OBJ_DIR			= $(BUILD_DIR)/objs
 # コンパイルするオブジェクトファイル
-OBJ_FILE		= main.o ImageBase.o BMP.o PNG.o ImageFactory.o Converter.o
+OBJ_FILE		= main.o ImageData.o RGB.o ImageBase.o BMP.o PNG.o ImageFactory.o Converter.o
 # リンク時に渡すためのオブジェクトファイルのパス
 OBJS			= $(OBJ_FILE:%.o=$(OBJ_DIR)/%.o)
 # オブジェクトファイルに対応するcppファイル

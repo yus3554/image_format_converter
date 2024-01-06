@@ -17,14 +17,29 @@ enum class ImageFormat{
     BMP, PNG, OTHERS
 };
 
+struct RGB
+{
+    unsigned char R;
+    unsigned char G;
+    unsigned char B;
+    unsigned char A;
+
+    void toString();
+};
+
+
 /**
  * @brief 画像データ
  * 
  */
 class ImageData{
 public:
-    // TODO: いろんな画像に関するデータを入れる
-    // 
+    ImageData();
+    int width;
+    int height;
+    int bitCount;
+    RGB* pixelData;
+    int pixelDataLength;
 };
 
 /**
@@ -47,16 +62,16 @@ struct IImage{
     /**
      * @brief Get the Image Data object
      * 
-     * @return ImageData 
+     * @return ImageData*
      */
-    virtual ImageData   getImageData()  = 0;
+    virtual ImageData*   getImageData()  = 0;
 
     /**
      * @brief 画像を生成する
      * 
+     * @param data 生成したい画像データ
      */
-    // TODO: 画像を生成する。なので、ConverterクラスでもこのIImageクラスをインスタンス化し、この関数を実行して画像を生成する
-    virtual void        generateImage(ImageData data)   = 0;
+    virtual void        generateImage(ImageData* data)   = 0;
 };
 
 
@@ -107,15 +122,16 @@ public:
     /**
      * @brief Get the Image Data object
      * 
-     * @return ImageData 
+     * @return ImageData* 
      */
-    ImageData   getImageData();
+    ImageData*   getImageData();
 
     /**
      * @brief 画像を生成する
      * 
+     * @param data 生成したい画像データ
      */
-    void        generateImage(ImageData data);
+    void        generateImage(ImageData* data);
 };
 
 /**
@@ -147,15 +163,16 @@ public:
     /**
      * @brief Get the Image Data object
      * 
-     * @return ImageData 
+     * @return ImageData*
      */
-    ImageData   getImageData();
+    ImageData*   getImageData();
 
     /**
      * @brief 画像を生成する
      * 
+     * @param data 生成したい画像データ
      */
-    void        generateImage(ImageData data);
+    void        generateImage(ImageData* data);
 };
 
 /**
@@ -187,13 +204,14 @@ public:
     /**
      * @brief Get the Image Data object
      * 
-     * @return ImageData 
+     * @return ImageData*
      */
-    ImageData   getImageData();
+    ImageData*   getImageData();
 
     /**
      * @brief 画像を生成する
      * 
+     * @param data 生成したい画像データ
      */
-    void        generateImage(ImageData data);
+    void        generateImage(ImageData* data);
 };

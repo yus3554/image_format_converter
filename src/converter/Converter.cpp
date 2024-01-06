@@ -37,8 +37,11 @@ void Converter::executeConvert(){
     IImage* exportImage = this->factory->createImageFromFormat(this->convertFormat, this->imagePath);
 
     // 画像データを取得
-    ImageData data = this->image->getImageData();
+    ImageData* data = this->image->getImageData();
 
     // 画像を出力
     exportImage->generateImage(data);
+
+    // 画像データを消去
+    delete data;
 }

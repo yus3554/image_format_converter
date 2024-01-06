@@ -17,10 +17,10 @@ const unsigned char PNG::fileSignature[8] = {0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a,
 
 const char PNG::extension[4] = "png";
 
-ImageData PNG::getImageData(){
-    return ImageData();
+ImageData* PNG::getImageData(){
+    return new ImageData();
 }
 
-void PNG::generateImage(ImageData data){
+void PNG::generateImage(ImageData* data){
     // 各画像クラスで初期化してください。
 }

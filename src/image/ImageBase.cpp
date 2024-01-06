@@ -28,11 +28,11 @@ void ImageBase::printFileName(){
     printf("%s\n", this->filePath);
 }
 
-ImageData ImageBase::getImageData(){
+ImageData* ImageBase::getImageData(){
     // 各画像クラスで初期化してください。
-    return ImageData();
+    return new ImageData();
 }
 
-void ImageBase::generateImage(ImageData data){
+void ImageBase::generateImage(ImageData* data){
     // 各画像クラスで初期化してください。
 }
