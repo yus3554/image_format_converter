@@ -30,9 +30,6 @@ void Converter::printImageFilePath(){
 }
 
 void Converter::executeConvert(){
-    printf("imagePath:\t%s\n", this->imagePath);
-    printf("format:\t\t%d\n", this->convertFormat);
-    
     // 出力用の画像クラスを生成
     IImage* exportImage = this->factory->createImageFromFormat(this->convertFormat, this->imagePath);
 

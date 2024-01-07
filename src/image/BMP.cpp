@@ -10,58 +10,17 @@
 #include <string.h>
 #include <math.h>
 #include "Image.h"
+#include "../utils/Utils.h"
 
 #define WINDOWS_PALETTE_SIZE 4
 
 BMP::BMP(const char filePath[]){
     this->filePath = filePath;
-    printf("bmp instance\n");
 }
 
 const unsigned char BMP::fileSignature[2] = {0x42, 0x4d};
 
 const char BMP::extension[4] = "bmp";
-
-void printChars(int charLength, char* chars){
-    for(int i = 0; i < charLength; i++){
-        printf("%02x ", chars[i]);
-    }
-    printf("\n");
-}
-
-/**
- * @brief char配列をリトルエンディアンの16進数としてintに変換
- * 
- * @param charLength 一括りにしたいcharの長さ
- * @param chars 
- * @return int 
- */
-int charsToInt(int charLength, unsigned char* chars){
-    int result = 0;
-    for(int i = charLength - 1; i >= 0; i--){
-        result = result + chars[i] * pow(16, i * 2);
-    }
-    return result;
-}
-
-/**
- * @brief intをリトルエンディアンの16進数としてchar配列に変換
- * 
- * @param charLength 
- * @param num 
- * @return char* 
- */
-unsigned char* intToChars(int charLength, unsigned int num){
-    unsigned char* result = new unsigned char[charLength];
-    unsigned int twoByteF = 255;
-
-    for(int i = 0; i < charLength; i++){
-        result[i] = (int)((num & (twoByteF << (8 * i))) >> (8 * i));
-    }
-
-    return result;
-}
-
 
 ImageData* BMP::getImageData(){
     this->filePathNullCheck();
@@ -94,23 +53,29 @@ ImageData* BMP::getImageData(){
 
     // ImageDataに格納
     ImageData* imageData = new ImageData();
-    int bfOffbits = charsToInt(4, &fileData[10]);
-    int bcSize = charsToInt(4, &fileData[14]);
+    int bfOffbits = charsToInt(4, &fileData[10], true);
+    int bcSize = charsToInt(4, &fileData[14], true);
     if(bcSize == 40){  // Windows BMP
-        imageData->width = charsToInt(4, &fileData[18]);
-        imageData->height = charsToInt(4, &fileData[22]);
-        imageData->bitCount = charsToInt(2, &fileData[28]);
-        int compression = charsToInt(4, &fileData[30]);  // 圧縮形式
-        int sizeImage = charsToInt(4, &fileData[34]);  // 画像データ部のサイズ
-        int xPixPerMeter = charsToInt(4, &fileData[38]);  // 横方向解像度
-        int yPixPerMeter = charsToInt(4, &fileData[42]);  // 縦方向解像度
-        int clrUsed = charsToInt(4, &fileData[46]);  // 格納されているパレット数
-        int cirImportant = charsToInt(4, &fileData[50]);  // 重要なパレットのインデックス
+        imageData->width = abs(charsToInt(4, &fileData[18], true));
+        imageData->height = abs(charsToInt(4, &fileData[22], true));
+        imageData->bitCount = charsToInt(2, &fileData[28], true);
+        int compression = charsToInt(4, &fileData[30], true);  // 圧縮形式
+        int sizeImage = charsToInt(4, &fileData[34], true);  // 画像データ部のサイズ
+        int xPixPerMeter = charsToInt(4, &fileData[38], true);  // 横方向解像度
+        int yPixPerMeter = charsToInt(4, &fileData[42], true);  // 縦方向解像度
+        int clrUsed = charsToInt(4, &fileData[46], true);  // 格納されているパレット数
+        int cirImportant = charsToInt(4, &fileData[50], true);  // 重要なパレットのインデックス
 
         // pixelDataの初期化
         int mod = imageData->width % 4;
-        imageData->pixelDataLength = imageData->width * imageData->height;
+        imageData->pixelDataLength = abs(imageData->width * imageData->height);
         imageData->pixelData = new RGB[imageData->pixelDataLength];
+
+        // pixelDataのエラーcatch
+        if(fileSize < (imageData->pixelDataLength + mod * imageData->height)){
+            printf("file size error or file width and height error\n");
+            exit(EXIT_FAILURE);
+        }
 
         if(imageData->bitCount <= 8){
             // パレットデータ
