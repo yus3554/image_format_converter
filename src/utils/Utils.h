@@ -29,5 +29,3 @@ int charsToInt(int charLength, unsigned char* chars, bool isLittleEndian);
  * @return char* 
  */
 unsigned char* intToChars(int charLength, unsigned int num);
-
-

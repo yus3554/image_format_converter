@@ -22,11 +22,11 @@ const char PNG::extension[4] = "png";
 ImageData* PNG::getImageData(){
     this->filePathNullCheck();
 
-    // ファイルデータ
-    unsigned char* fileData;
-
     // ファイルサイズ
     int fileSize = 0;
+
+    // ImageDataに格納
+    ImageData* imageData = new ImageData();
 
     // ファイル解析
     FILE* file;
@@ -38,57 +38,87 @@ ImageData* PNG::getImageData(){
     fseek(file, 0, SEEK_END);
     fileSize = ftell(file);
     fseek(file, 0, SEEK_SET);
-    if(fileSize < 14){
-        printf("file size error\n");
-        exit(EXIT_FAILURE);
-    }
 
-    // ファイル読み込み
-    fileData = (unsigned char*)malloc(fileSize);
-    fread(fileData, 1, fileSize, file);
-    fclose(file);
-
-    // ImageDataに格納
-    ImageData* imageData = new ImageData();
+    int chunkDataLength= 0;
+    unsigned char chunkDataLengthChar[4];
+    char chunkType[4];
 
     // IHDR
-    int ihdrSize = charsToInt(4, &fileData[8], false);
-    unsigned char* ihdrChunkType = &fileData[12];
-    printf("%02x\n", ihdrChunkType[0]);
-    if(ihdrChunkType[0] != 0x49 || ihdrChunkType[1] != 0x48 || ihdrChunkType[2] != 0x44 || ihdrChunkType[3] != 0x52){
-        printf("illegal ihdr chunk\n");
+    fseek(file, 8, SEEK_SET);
+    fread(&chunkDataLengthChar, 1, 4, file);
+    chunkDataLength = charsToInt(4, chunkDataLengthChar, false);
+    fread(chunkType, 1, 4, file);
+    // printf("%d %s\n", chunkDataLength, chunkType);
+    if(strcmp(chunkType, "IHDR") != 0 || chunkDataLength != 13){
+        printf("illegal file.\n");
         exit(EXIT_FAILURE);
     }
-    imageData->width = abs(charsToInt(4, &fileData[16], false));
-    imageData->height = abs(charsToInt(4, &fileData[20], false));
-    int bitDepth = fileData[24];
-    int colorType = fileData[25];
-    int compression = fileData[26];
-    int filter = fileData[27];
-    int interlace = fileData[28];
-    unsigned char* ihdrCRC = &fileData[29];
-    printf("width: %d, height: %d\n", imageData->width, imageData->height);
-    printf("bitDepth: %d, colorType: %d, compression: %d, filter: %d, interlace: %d\n", bitDepth, colorType, compression, filter, interlace);
+    unsigned char* ihdrData = new unsigned char[chunkDataLength];
+    fread(ihdrData, 1, chunkDataLength, file);
+    fseek(file, 4, SEEK_CUR);  // CRC
+    imageData->width = charsToInt(4, &ihdrData[0], false);
+    imageData->height = charsToInt(4, &ihdrData[4], false);
+    imageData->bitCount = ihdrData[8];
+    int colorType = ihdrData[9];
+    int compression = ihdrData[10];
+    int filter = ihdrData[11];
+    int interlace = ihdrData[12];
+    printf("width: %d, height: %d, bitCount: %d, colorType: %d, compression:%d, filter: %d\n", imageData->width, imageData->height, imageData->bitCount, colorType, compression, filter);
+    delete ihdrData;
 
-    // PLTE or IDAT
-    int ihdrIndex = 33;
-    int plteOrIdatSize = charsToInt(4, &fileData[ihdrIndex], false);
-    unsigned char* plteOrIdatChunkType = &fileData[ihdrIndex + 4];
-    printCharsToHex(4, plteOrIdatChunkType);
-    if(plteOrIdatChunkType[0] == 0x50 && plteOrIdatChunkType[1] == 0x4c && plteOrIdatChunkType[2] == 0x54 && plteOrIdatChunkType[3] == 0x45){
-        // PLTE
-
-    } else if(plteOrIdatChunkType[0] == 0x49 && plteOrIdatChunkType[1] == 0x44 && plteOrIdatChunkType[2] == 0x41 && plteOrIdatChunkType[3] == 0x54){
-        // IDAT
-        if(colorType == 3){
-            printf("plte not exists.\n");
+    // PLTE, IDATの取得
+    bool plte = false;
+    RGB* palettes;
+    unsigned char* idatData;
+    while(true){
+        if(ftell(file) > fileSize){
+            printf("illegal file.\n");
             exit(EXIT_FAILURE);
         }
 
-    } else {
-        // OTHERS
-        printf("unsupported file.\n");
-        exit(EXIT_FAILURE);
+        fread(&chunkDataLengthChar, 1, 4, file);
+        chunkDataLength = charsToInt(4, chunkDataLengthChar, false);
+        fread(chunkType, 1, 4, file);
+
+        if(strcmp(chunkType, "PLTE") == 0){
+            plte = true;
+            if(chunkDataLength % 3 != 0){
+                printf("illegal file.\n");
+                exit(EXIT_FAILURE);
+            }
+
+            palettes = new RGB[chunkDataLength / 3];
+            for(int paletteIndex = 0; paletteIndex < chunkDataLength / 3; paletteIndex++){
+                fread(&palettes[paletteIndex].R, 1, 1, file);
+                fread(&palettes[paletteIndex].G, 1, 1, file);
+                fread(&palettes[paletteIndex].B, 1, 1, file);
+                palettes[paletteIndex].A = 0;
+            }
+            fseek(file, 4, SEEK_CUR);  // CRC
+        } else if (strcmp(chunkType, "IDAT") == 0){
+            if(colorType == 3 && !plte){
+                printf("illegal file.\n");
+                exit(EXIT_FAILURE);
+            }
+            idatData = new unsigned char[chunkDataLength];
+            fread(idatData, 1, chunkDataLength, file);
+            fseek(file, 4, SEEK_CUR);  // CRC
+            printf("%d\n", chunkDataLength);  // zlibで圧縮されているため、pixel数と異なる
+        } else if (strcmp(chunkType, "IEND") == 0){
+            break;
+        } else {
+            // other chunk
+            // printf("other chunk: %s\n", chunkType);
+            fseek(file, chunkDataLength, SEEK_CUR);
+            fseek(file, 4, SEEK_CUR);  // CRC
+        }
+    }
+
+    // IDATのRGB化
+    imageData->pixelDataLength = imageData->width * imageData->height;
+    imageData->pixelData = new RGB[imageData->pixelDataLength];
+    // idatDataを解凍しないといけない
+    if(plte){
     }
 
     return new ImageData();
