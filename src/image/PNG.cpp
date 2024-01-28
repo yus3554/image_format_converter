@@ -116,7 +116,7 @@ ImageData* PNG::getImageData(){
 
     // IDATのRGB化
     imageData->pixelDataLength = imageData->width * imageData->height;
-    imageData->pixelData = new RGB[imageData->pixelDataLength];
+    imageData->rgbPixelData = new RGB[imageData->pixelDataLength];
     // idatDataを解凍しないといけない
     if(plte){
     }

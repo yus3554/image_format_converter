@@ -19,11 +19,34 @@ enum class ImageFormat{
 
 struct RGB
 {
+    /**
+     * @brief red color value
+     * 
+     */
     unsigned char R;
+
+    /**
+     * @brief green color value
+     * 
+     */
     unsigned char G;
+    
+    /**
+     * @brief blue color value
+     * 
+     */
     unsigned char B;
+    
+    /**
+     * @brief alpha color value
+     * 
+     */
     unsigned char A;
 
+    /**
+     * @brief RGBAをわかりやすく文字列にする。
+     * 
+     */
     void toString();
 };
 
@@ -34,11 +57,64 @@ struct RGB
  */
 class ImageData{
 public:
+    /**
+     * @brief Construct a new Image Data object
+     * 
+     */
     ImageData();
+
+    /**
+     * @brief 画像の幅
+     * 
+     */
     int width;
+
+    /**
+     * @brief 画像の高さ
+     * 
+     */
     int height;
+
+    /**
+     * @brief ビット数
+     * 
+     */
     int bitCount;
-    RGB* pixelData;
+
+    /**
+     * @brief パレットを使用しているかどうか
+     * 
+     */
+    bool isPalette;
+
+    /**
+     * @brief （パレットを使用している場合のみ）パレット数
+     * 
+     */
+    int paletteLength;
+
+    /**
+     * @brief （パレットを使用していない場合のみ）ピクセルごとのRGBを格納する
+     * 
+     */
+    RGB* rgbPixelData;
+
+    /**
+     * @brief （パレットを使用している場合のみ）パレットのRGBを格納する
+     * 
+     */
+    RGB* paletteData;
+
+    /**
+     * @brief （パレットを使用している場合のみ）ピクセルごとのパレットのインデックスが格納されている
+     * 
+     */
+    unsigned char* palettePixelData;
+
+    /**
+     * @brief ピクセルの数
+     * 
+     */
     int pixelDataLength;
 };
 
