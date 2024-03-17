@@ -8,7 +8,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "Image.h"
+#include "PNG.h"
 #include "../utils/Utils.h"
 
 PNG::PNG(const char filePath[]){

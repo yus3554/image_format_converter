@@ -23,7 +23,6 @@ $(PROGRAM):		$(OBJ_FILE)
 
 SUFFIXES:		.cpp .o
 .cpp.o:
-				mkdir -p $(OBJ_DIR)
 				$(CC) -c $< -o $(OBJ_DIR)/$@
 
 .PHONY:			clean

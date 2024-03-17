@@ -10,6 +10,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "image/Image.h"
+#include "image/BMP.h"
+#include "image/PNG.h"
 #include "converter/Converter.h"
 
 /**

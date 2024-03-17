@@ -40,3 +40,20 @@ unsigned char* intToChars(int charLength, unsigned int num){
 
     return result;
 }
+
+int getFileSize(const char* filePath){
+    FILE* file;
+    if((file = fopen(filePath, "rb")) == NULL){
+        printf("file open error\n");
+        exit(EXIT_FAILURE);
+    }
+    // ファイルサイズ
+    fseek(file, 0, SEEK_END);
+    int fileSize = ftell(file);
+    fseek(file, 0, SEEK_SET);
+    if(fileSize < 14){
+        printf("file size error\n");
+        exit(EXIT_FAILURE);
+    }
+    return fileSize;
+}

@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Image.h"
+#include "BMP.h"
+#include "PNG.h"
 #include "ImageFactory.h"
 
 /**
