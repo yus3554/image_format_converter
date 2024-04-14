@@ -1,9 +1,9 @@
-/**
+﻿/**
  * @file main.cpp
  * @author Yusuke Ota
  * @brief image_format_converterのメイン関数
- * @version 0.1
- * @date 2024-01-02
+ * @version 0.3
+ * @date 2024-04-15
  */
 
 #include <stdio.h>
@@ -17,7 +17,7 @@
 /**
  * @brief ファイルパスの最大長
  */
-#define MAX_FILE_PATH_LENGTH 256
+constexpr auto MAX_FILE_PATH_LENGTH = 256;
 
 /**
  * @brief コマンドライン引数から画像パスと変換したい画像フォーマットを取得する
@@ -34,7 +34,7 @@ void analyzeArgs(char* imagePath, ImageFormat& convertFormat, int argc, char* ar
  */
 int main(int argc, char* argv[]){
     // 変換フォーマット
-    ImageFormat convertFormat = ImageFormat::PNG;
+    ImageFormat convertFormat = ImageFormat::BMP;
     // 画像パス
     char imagePath[MAX_FILE_PATH_LENGTH] = "";
 
@@ -71,7 +71,7 @@ void analyzeArgs(char* imagePath, ImageFormat& convertFormat, int argc, char* ar
                 continue;
 
             if(strlen(argv[i]) < MAX_FILE_PATH_LENGTH){
-                strcpy(imagePath, argv[i]);
+                strcpy_s(imagePath, MAX_FILE_PATH_LENGTH, argv[i]);
             } else {
                 printf("ファイルパス長が%d文字を超えています。", MAX_FILE_PATH_LENGTH);
                 exit(EXIT_FAILURE);

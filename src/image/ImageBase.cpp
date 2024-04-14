@@ -1,20 +1,23 @@
-/**
+﻿/**
  * @file ImageBase.cpp
  * @author Yusuke Ota
  * @brief 画像基底クラスの実装部
- * @version 0.1
- * @date 2024-01-02
+ * @version 0.3
+ * @date 2024-04-15
  */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "Image.h"
 
 
-ImageBase::ImageBase(){}
+ImageBase::ImageBase(){
+    this->filePath = "";
+    this->format = ImageFormat::OTHERS;
+
+}
 
 ImageBase::ImageBase(const char filePath[]){
     this->filePath = filePath;
+    this->format = ImageFormat::OTHERS;
 }
 
 void ImageBase::filePathNullCheck(){

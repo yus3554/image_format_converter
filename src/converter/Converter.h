@@ -1,12 +1,13 @@
-/**
+﻿/**
  * @file Converter.h
  * @author Yusuke Ota
  * @brief 画像フォーマットを変換するクラスの宣言部
- * @version 0.1
- * @date 2024-01-02
+ * @version 0.3
+ * @date 2024-04-15
  */
 
 #pragma once
+#include <stdio.h>
 #include "../image/Image.h"
 #include "../image/ImageFactory.h"
 

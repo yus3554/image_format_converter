@@ -1,15 +1,12 @@
-/**
+﻿/**
  * @file PNG.cpp
  * @author Yusuke Ota
  * @brief PNGクラスの実装部
- * @version 0.1
- * @date 2024-01-02
+ * @version 0.3
+ * @date 2024-04-15
  */
 
-#include <stdlib.h>
-#include <string.h>
 #include "PNG.h"
-#include "../utils/Utils.h"
 
 PNG::PNG(const char filePath[]){
     this->filePath = filePath;
@@ -30,7 +27,7 @@ ImageData* PNG::getImageData(){
 
     // ファイル解析
     FILE* file;
-    if((file = fopen(filePath, "rb")) == NULL){
+    if((fopen_s(&file, filePath, "rb")) != 0){
         printf("file open error\n");
         exit(EXIT_FAILURE);
     }
@@ -63,8 +60,8 @@ ImageData* PNG::getImageData(){
     int compression = ihdrData[10];
     int filter = ihdrData[11];
     int interlace = ihdrData[12];
-    printf("width: %d, height: %d, bitCount: %d, colorType: %d, compression:%d, filter: %d\n", imageData->width, imageData->height, imageData->bitCount, colorType, compression, filter);
-    delete ihdrData;
+    printf("width: %d, height: %d, bitCount: %d, colorType: %d, compression:%d, filter: %d\n",
+        imageData->width, imageData->height, imageData->bitCount, colorType, compression, filter);
 
     // PLTE, IDATの取得
     bool plte = false;

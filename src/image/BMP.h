@@ -1,14 +1,20 @@
-/**
+﻿/**
  * @file BMP.h
  * @author Yusuke Ota
  * @brief BMPに関わるクラス・構造体・列挙型の宣言部
- * @version 0.1
- * @date 2024-03-17
+ * @version 0.3
+ * @date 2024-04-15
  */
 
 #pragma once
+
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
 #include "Image.h"
+#include "../utils/Utils.h"
 
 /**
  * @brief BMPクラス
@@ -97,14 +103,14 @@ private:
 
     /**
      * @brief 画像ファイルからデータを読み込む。
-     * 
+     *
      * @param fileData ファイルのデータを格納したい変数
      */
     void readFile(unsigned char* fileData);
 
     /**
      * @brief Windows BMPのヘッダーを読み込む。（bitCount <= 8）
-     * 
+     *
      * @param imageData 読み込んだ一部のヘッダデータを格納したい変数
      * @param fileData 読み込むファイルデータ
      */
@@ -112,52 +118,52 @@ private:
 
     /**
      * @brief Windows BMPのパレット情報を読み込む。
-     * 
+     *
      * @param imageData 読み込んだ画像データを格納したい変数
      * @param fileData 読み込むファイルデータ
-     * 
+     *
      */
     void readWinBMPPallete(ImageData* imageData, unsigned char* fileData);
 
     /**
      * @brief Windows BMPのRGB情報を読み込む。（bitCount > 8）
-     * 
+     *
      * @param imageData 読み込んだ画像データを格納したい変数
      * @param fileData 読み込むファイルデータ
-     * 
+     *
      */
     void readWinBMPRGB(ImageData* imageData, unsigned char* fileData);
 
 public:
     /**
      * @brief BMPのファイルシグネチャ
-     * 
+     *
      */
     static const unsigned char  fileSignature[2];
 
     /**
      * @brief BMPの拡張子名
-     * 
+     *
      */
     static const char           extension[4];
 
     /**
      * @brief Construct a new BMP object
-     * 
+     *
      * @param filePath 画像ファイルパス
      */
     BMP(const char filePath[]);
 
     /**
      * @brief Get the Image Data object
-     * 
+     *
      * @return ImageData*
      */
     ImageData*   getImageData();
 
     /**
      * @brief 画像を生成する
-     * 
+     *
      * @param data 生成したい画像データ
      */
     void        generateImage(ImageData* data);

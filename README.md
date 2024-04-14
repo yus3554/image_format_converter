@@ -4,34 +4,39 @@
 
 - 画像ファイルを他の画像形式に変換するツールです。
 
+:::note warn
+警告
+2024/04/15時点では、読み込みも返還もBMPにしか対応していません。
+:::
+
 ## Build
 
-- Makefileからビルドを実行してください。
+- image_format_converte.slnからビルドしてください。
 
 ## How to use
 
 - 変換元画像ファイルを指定して実行してください。
-- オプションで変換したい画像ファイルフォーマットを指定できます。（指定しない場合PNGに変換します。）
-- 変換元画像ファイルと同じ場所、同じ名前で変換後のファイルを出力します。
+- オプションで変換したい画像ファイルフォーマットを指定できます。（指定しない場合BMPに変換します。）
+- 変換元画像ファイルと同じ場所、同じファイル名に変換後のファイルを出力します。
+  - ファイル名の最後に拡張子を付与します。（例：A.bmp　→　A.bmp.bmp）
 
 ```shell
-image_format_converter [-f format] [変換元画像ファイル] 
+image_format_converter.exe [-f format] [変換元画像ファイル] 
 ```
 
 ### Example
 
-- A.bmpをA.pngに変換
+- A.bmpをA.bmp.bmpに変換
 ```shell
-image_format_converter A.bmp
+image_format_converter.exe A.bmp
 ```
 
-- B.pngをB.bmpに変換
+- B.bmpをB.bmp.bmpに変換
 ```shell
-image_format_converter B.png -f bmp
+image_format_converter.exe B.bmp -f bmp
 ```
 
 ## Convertible image formats
 
 - -fオプションで指定できるファイルフォーマットです。
   - bmp
-  - png

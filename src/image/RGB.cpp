@@ -1,9 +1,9 @@
-/**
+﻿/**
  * @file RGB.cpp
  * @author Yusuke Ota
  * @brief RGBクラスの実装部
- * @version 0.1
- * @date 2024-01-06
+ * @version 0.3
+ * @date 2024-04-15
  */
 
 #include "Image.h"

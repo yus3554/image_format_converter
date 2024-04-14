@@ -1,32 +1,27 @@
-/**
+﻿/**
  * @file BMP.cpp
  * @author Yusuke Ota
  * @brief BMPクラスの実装部
- * @version 0.1
- * @date 2024-01-02
+ * @version 0.3
+ * @date 2024-04-15
  */
 
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
 #include "BMP.h"
-#include "../utils/Utils.h"
 
-#define WINDOWS_PALETTE_SIZE 4
+constexpr auto WINDOWS_PALETTE_SIZE = 4;
+
+const unsigned char BMP::fileSignature[2] = { 0x42, 0x4d };
+
+const char BMP::extension[4] = "bmp";
 
 BMP::BMP(const char filePath[]){
     this->filePath = filePath;
     this->origHeader = new OriginalHeader();
 }
 
-const unsigned char BMP::fileSignature[2] = {0x42, 0x4d};
-
-const char BMP::extension[4] = "bmp";
-
-
 void BMP::readFile(unsigned char* fileData){
     FILE* file;
-    if((file = fopen(filePath, "rb")) == NULL){
+    if((fopen_s(&file, filePath, "rb")) != 0){
         printf("file open error\n");
         exit(EXIT_FAILURE);
     }
@@ -37,7 +32,6 @@ void BMP::readFile(unsigned char* fileData){
     fread(fileData, 1, this->origHeader->fileSize, file);
     fclose(file);
 }
-
 
 void BMP::readWinBMPHeader(ImageData* imageData, unsigned char* fileData){
     imageData->width = abs(charsToInt(4, &fileData[18], true));
@@ -208,6 +202,9 @@ ImageData* BMP::getImageData(){
     // ファイルの読み込み
     unsigned char* fileData = (unsigned char*)malloc(this->origHeader->fileSize);
     this->readFile(fileData);
+    if (fileData == NULL) {
+        throw "fileDataがNULLです。";
+    }
 
     // ImageDataに格納
     ImageData* imageData = new ImageData();
@@ -256,10 +253,10 @@ void BMP::generateImage(ImageData* data){
     // ファイル
     FILE* file;
     char outputFilePath[260] = "";
-    strcat(outputFilePath, this->filePath);
-    strcat(outputFilePath, ".");
-    strcat(outputFilePath, this->extension);
-    if((file = fopen(outputFilePath, "wb")) == NULL){
+    strcat_s(outputFilePath, this->filePath);
+    strcat_s(outputFilePath, ".");
+    strcat_s(outputFilePath, this->extension);
+    if((fopen_s(&file, outputFilePath, "wb")) != 0){
         printf("file open error\n");
         exit(EXIT_FAILURE);
     }

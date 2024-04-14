@@ -1,15 +1,12 @@
-/**
+﻿/**
  * @file Converter.cpp
  * @author Yusuke Ota
  * @brief 画像フォーマットを変換するクラスの実装部
- * @version 0.1
- * @date 2024-01-02
+ * @version 0.3
+ * @date 2024-04-15
  */
 
-#include <stdio.h>
 #include "Converter.h"
-#include "../image/Image.h"
-#include "../image/ImageFactory.h"
 
 Converter::Converter(char* imagePath, ImageFormat convertFormat){
     this->imagePath         = imagePath;

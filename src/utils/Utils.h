@@ -1,12 +1,13 @@
-/**
+﻿/**
  * @file Utils.h
  * @author Yusuke Ota
  * @brief ユーティリティ関数の宣言部
- * @version 0.1
- * @date 2024-01-06
+ * @version 0.3
+ * @date 2024-04-15
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 
 void printCharsToHex(int charLength, unsigned char* chars);

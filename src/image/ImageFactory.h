@@ -1,15 +1,17 @@
-/**
+﻿/**
  * @file ImageFactory.h
  * @author Yusuke Ota
  * @brief 画像クラスのファクトリークラスの宣言部
- * @version 0.1
- * @date 2024-01-04
-
+ * @version 0.3
+ * @date 2024-04-15
  */
 
 #pragma once
 #include <stdio.h>
+#include <stdlib.h>
 #include "Image.h"
+#include "BMP.h"
+#include "PNG.h"
 
 /**
  * @brief 画像クラスのファクトリークラス

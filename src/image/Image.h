@@ -1,13 +1,14 @@
-/**
+﻿/**
  * @file Image.h
  * @author Yusuke Ota
  * @brief 画像に関わるクラス・構造体・列挙型の宣言部
- * @version 0.1
- * @date 2024-01-02
+ * @version 0.3
+ * @date 2024-04-15
  */
 
 #pragma once
 #include <stdio.h>
+#include <stdlib.h>
 
 /**
  * @brief 画像フォーマット列挙型

@@ -1,23 +1,18 @@
-/**
+﻿/**
  * @file ImageFactory.cpp
  * @author Yusuke Ota
  * @brief 画像クラスのファクトリークラスの実装部
- * @version 0.1
- * @date 2024-01-02
+ * @version 0.3
+ * @date 2024-04-15
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "Image.h"
-#include "BMP.h"
-#include "PNG.h"
 #include "ImageFactory.h"
 
 /**
  * @brief 取得するファイルシグネチャ長
  * 
  */
-#define SIGNATURE_SIZE 8
+constexpr auto SIGNATURE_SIZE = 8;
 
 ImageFormat ImageFactory::judgeImageFormat(char* filePath){
     // ファイルシグネチャ用変数
@@ -25,7 +20,7 @@ ImageFormat ImageFactory::judgeImageFormat(char* filePath){
 
     // ファイルのヘッダを取得
     FILE* file;
-    if((file = fopen(filePath, "rb")) == NULL){
+    if((fopen_s(&file, filePath, "rb")) != 0){
         printf("file open error\n");
         exit(EXIT_FAILURE);
     }

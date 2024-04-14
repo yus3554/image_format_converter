@@ -1,13 +1,10 @@
-/**
+﻿/**
  * @file Utils.cpp
  * @author Yusuke Ota
  * @brief ユーティリティ関数の実装
- * @version 0.1
- * @date 2024-01-06
+ * @version 0.3
+ * @date 2024-04-15
  */
-
-#include <stdio.h>
-#include <math.h>
 
 #include "utils.h"
 
@@ -22,9 +19,9 @@ int charsToInt(int charLength, unsigned char* chars, bool isLittleEndian){
     int result = 0;
     for(int i = 0; i < charLength; i++){
         if(isLittleEndian){
-            result = result + chars[i] * pow(16, i * 2);
+            result = result + chars[i] * (int)pow(16, i * 2);
         } else {
-            result = result + chars[i] * pow(16, (charLength - i - 1) * 2);
+            result = result + chars[i] * (int)pow(16, (charLength - i - 1) * 2);
         }
     }
     return result;
@@ -43,7 +40,7 @@ unsigned char* intToChars(int charLength, unsigned int num){
 
 int getFileSize(const char* filePath){
     FILE* file;
-    if((file = fopen(filePath, "rb")) == NULL){
+    if((fopen_s(&file, filePath, "rb")) != 0){
         printf("file open error\n");
         exit(EXIT_FAILURE);
     }
